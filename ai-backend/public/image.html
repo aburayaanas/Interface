@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Analysis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div>
+      <h1 id="homeText">VerfAI</h1>
+    </div>
+
+    <div>
+      <img src="imgs/border.png" alt="robot" id="indeximg">
+    </div>
+
+    <h1 id="inputtxt">Upload your image in the box below!</h1>
+    <div id="inputArea">
+      <div class="textNimage-resultArea">
+        <input type="file" id="imageInput" class="firstImageInput" accept="image/*" onchange="handleFileSelect()">
+        <label for="imageInput" id="imageInputLabel" class="firstImageInput">
+          <div>
+            <div id="imgSelect">
+              <img src="imgs/select.png" id="imgSelectImg" alt="select image"/>
+            </div>
+            <div>
+              <p id="imgSelectText">Please select a file!</p>
+              <p id="fileNameDisplay"></p>
+            </div>
+          </div>
+        </label>
+
+        <div id="imageResultImage"></div>
+      </div>
+      <div>
+        <button onclick="analyzeImage()" id="analysisBtn">Analyze</button>
+      </div>
+    </div>
+    <p id="imageResult"></p>
+  </div>
+
+  <script>
+    function handleFileSelect() {
+      const fileInput = document.getElementById('imageInput');
+      const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+      if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = `File selected: ${fileInput.files[0].name}`;
+      } else {
+        fileNameDisplay.textContent = 'No file selected';
+      }
+    }
+
+    async function analyzeImage() {
+      const fileInput = document.getElementById('imageInput');
+      const imageResult = document.getElementById('imageResult');
+
+      if (fileInput.files.length === 0) {
+        imageResult.textContent = "Please select an image file.";
+        return;
+      }
+
+      imageResult.textContent = "Analyzing...";
+
+      const formData = new FormData();
+      formData.append('image', fileInput.files[0]);
+
+      try {
+        const response = await fetch('http://localhost:3000/analyze-image', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        imageResult.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        imageResult.textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Analysis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div>
+      <h1 id="homeText">VerfAI</h1>
+    </div>
+    <div>
+      <h1 id="inputtxt">Enter your text in the box below!</h1>
+    </div>
+    <div id="inputArea">
+      <div class="textNimage-resultArea">
+        <textarea id="textInput" class="inputs"></textarea>
+        <div id="textResultImage"></div>
+      </div>
+      <div>
+        <button onclick="analyzeText()" id="analysisBtn">Analyze</button>
+      </div>
+    </div>
+    <p id="textResult" style="display: none;"></p>
+  </div>
+  <div>
+    <img src="imgs/border.png" alt="robot" id="indeximg">
+  </div>
+  <script>
+    async function analyzeText() {
+      const textInput = document.getElementById('textInput').value;
+      const textResult = document.getElementById('textResult');
+
+      if (!textInput.trim()) {
+        textResult.style.display = "block";
+        textResult.textContent = "Please enter some text.";
+        return;
+      }
+
+      textResult.style.display = "block";
+      textResult.textContent = "Analyzing...";
+
+      try {
+        const response = await fetch('http://localhost:3000/analyze-text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ text: textInput })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        textResult.textContent = JSON.stringify(data, null, 2);
+        alert(`Analysis Result:\n${JSON.stringify(data, null, 2)}`);
+      } catch (error) {
+        textResult.textContent = `Error: ${error.message}`;
+        alert(`Error: ${error.message}`);
+      }
+    }
+  </script>
+</body>
+</html>

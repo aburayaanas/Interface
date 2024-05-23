@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Text Detection</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div>
+    <h1 id="homeText">VerfAI</h1>
+  </div>  
+
+  <div id="welcomeTxt">
+    <p>Please choose your preferred input type!</p>
+  </div>
+
+  <div id="btns">
+    <div class="btnGroup">
+      <button onclick="chooseText()" class="btn" id="txtBtn">TXT</button>
+      <p class="upTxt">upload text</p>
+    </div>
+    <div class="btnGroup">
+      <button onclick="chooseImage()" class="btn" id="imgBtn"><img src="imgs/upload_image_icon.jpg" id="btnImg"></button>
+      <p class="upTxt">upload image</p>
+    </div>
+  </div>
+
+  <div>
+    <img src="imgs/border.png" alt="robot" id="indeximg">
+  </div>
+
+  <script>
+    function chooseText() {
+      window.location.href = 'text.html';
+    }
+
+    function chooseImage() {
+      window.location.href = 'image.html';
+    }
+  </script>
+</body>
+</html>
