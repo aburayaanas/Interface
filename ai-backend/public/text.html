@@ -23,6 +23,7 @@
         <button onclick="analyzeText()" id="analysisBtn">Analyze</button>
       </div>
     </div>
+    <div id="errorMessage" style="color: red; display: none;"></div>
     <p id="textResult" style="display: none;"></p>
   </div>
   <div>
@@ -32,10 +33,22 @@
     async function analyzeText() {
       const textInput = document.getElementById('textInput').value;
       const textResult = document.getElementById('textResult');
+      const errorMessage = document.getElementById('errorMessage');
+
+      // Hide previous messages
+      textResult.style.display = "none";
+      errorMessage.style.display = "none";
 
       if (!textInput.trim()) {
-        textResult.style.display = "block";
-        textResult.textContent = "Please enter some text.";
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Please enter some text.";
+        return;
+      }
+
+      const wordCount = textInput.trim().split(/\s+/).length;
+      if (wordCount < 1000) {
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Please enter at least 1000 words.";
         return;
       }
 

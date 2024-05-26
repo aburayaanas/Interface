@@ -28,7 +28,7 @@ nltk.download('averaged_perceptron_tagger')
 
 # Load your model here
 print("Loading custom model...")
-model = tf.keras.models.load_model('colab_model.h5')
+model = tf.keras.models.load_model('bert_embeddings_360thousand_Full_Featuers_DataSet_360thousand.h5')
 
 # Function to calculate n-gram repetitiveness
 def ngram_repetitiveness(text, n=2):
